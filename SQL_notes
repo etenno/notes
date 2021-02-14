@@ -1,0 +1,69 @@
+===========SQL=============
+
+
+# SELECT
+## SELECT column_name, column_name2 FROM table_name
+- SELECT first_name, last_name FROM patients
+Send me all the first names & last names for EVERY patient
+- SELECT first_name, last_name FROM doctors
+Send me all the first names & last names for EVERY doctor
+- SELECT * FROM patients
+Send me all the information from EVERY COLUMN for EVERY patient
+
+
+# WHERE
+## SELECT columns FROM table_name WHERE condition
+- SELECT * FROM patients WHERE age = 21
+Send me all the information from EVERY COLUMN for ALL patients with AGE = 21
+- SELECT * FROM doctors WHERE specialty = 'Cardiac Surgery'
+Send me all the information from EVERY COLUMN for ALL doctors with specialty = 'Cardiac Surgery'
+<!-- NOTE:  Common condition is to do  WHERE column_name = value -->
+## WHERE column_name LIKE open_comparison
+- SELECT * FROM doctors WHERE specialty LIKE '%Surgery%'
+Send me all the information from EVERY COLUMN for ALL doctors with specialty that has ANYTHING before the word "Surgery"
+## WHERE condition1 AND condition2
+- SELECT * FROM doctors
+WHERE specialty = 'Cardiac Surgery'
+AND first_name = 'Steve'
+Send me all the information from EVERY COLUMN for ALL doctors with specialty = 'Cardiac Surgery' and with a first name 'Steve'
+
+
+# ORDER
+## SELECT columns FROM table_name ORDER BY column_name ASC/DESC
+- SELECT * FROM patients ORDER BY age ASC
+Send me all the information from EVERY COLUMN for EVERY patient, and order them by age, youngest to oldest.
+- SELECT * FROM patients ORDER BY age DESC
+Send me all the information from EVERY COLUMN for EVERY patient, and order them by age, oldest to youngest.
+
+
+# COUNT
+## SELECT COUNT(column_name) FROM table_name
+- SELECT COUNT( * ) FROM doctors
+Send me the TOTAL NUMBER of doctors in the doctors table.
+- SELECT COUNT( * ) FROM doctors WHERE specialty = 'Cardiac Surgery'
+Send me the TOTAL NUMBER of doctors w/ specialty of Cardiac Surgery.
+- SELECT COUNT( * ), specialty FROM doctors GROUP BY specialty
+Send me a break down of total number BY specialty.
+<!-- ["Cardiac Surgery", 10], ["Foot Specialty", 32], ["Family Doctor", 6] -->
+- SELECT COUNT( * ) AS c, specialty FROM doctors
+GROUP BY specialty ORDER BY c DESC
+Send me a break down of total number BY specialty, order with from largest number to smallest number.
+<!-- ["Foot Specialty", 32], ["Cardiac Surgery", 10], ["Family Doctor", 6] -->
+<!--              highest count      -> to ->                lowest count    -->
+---
+
+
+# MULITPLE TABLES!  i.e. JOIN
+## SELECT column_name FROM table_1 JOIN table_2 ON table_2.id = table_1.table_2_id
+- SELECT * FROM inhabitants
+JOIN cities ON cities.id = inhabitants.city_id
+WHERE cities.name = 'Paris'
+Send me ALL the information from ALL COLUMNS for EVERY inhabitant living in Paris.
+- SELECT * FROM inhabitants
+JOIN cities ON cities.id = inhabitants.city_id
+WHERE cities.name = 'Paris'
+AND inhabitants.age > 18
+- SELECT c.created_at, p.first_name, p.last_name, d.first_name, d.last_name
+FROM consultations c
+JOIN patients p ON c.patient_id = p.id
+JOIN doctors d ON c.doctor_id = d.id
